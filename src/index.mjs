@@ -1,4 +1,4 @@
-import shnappy from './shnappy.mjs'
+import { shnappy, toShape } from './shnappy.mjs'
 
 /*
  * Init
@@ -7,7 +7,7 @@ import shnappy from './shnappy.mjs'
 const cvs = document.getElementById('cvs')
 if (!(cvs instanceof HTMLCanvasElement)) throw Error('Error getting canvas.')
 
-cvs.width = cvs.height = 800
+cvs.width = cvs.height = 1000
 
 const ctx = cvs.getContext('2d')
 if (!ctx) throw new Error('Error getting canvas context.')
@@ -54,7 +54,7 @@ const onStop = () => {
   isDrawing = false
   ctx.closePath()
 
-  const shnapped = shnappy(shape)
+  const shnapped = toShape(shape)
   if (shnapped.type === 'freehand') return
 
   const oldColor = ctx.strokeStyle
@@ -89,3 +89,22 @@ cvs.addEventListener('mousemove', onMove)
 document.body.addEventListener('click', e => {
   if (e.currentTarget === e.target) ctx.clearRect(0, 0, cvs.width, cvs.height)
 })
+
+// const steps = 64
+// const r = 500
+// ctx.strokeStyle = '#f61d00'
+// ctx.beginPath()
+// const circle = []
+// for (let i = 0; i <= steps; i++) {
+//   const theta = Math.PI * 2 * (i / steps) + Math.PI
+//   const x = Math.round(r * Math.sin(theta) + r)
+//   const y = Math.round(r * Math.cos(theta) + r)
+//   if (i === 0) ctx.moveTo(x, y)
+//   else ctx.lineTo(x, y)
+//   ctx.stroke()
+//   circle.push([x, y])
+// }
+// console.log(JSON.stringify(circle))
+// ctx.closePath()
+
+shnappy(['ellipse', 'rectangle'])
